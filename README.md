@@ -33,14 +33,17 @@ in a corner of your desktop and forget about it until it chimes.
 
 ## Download
 
-Grab the latest `FlipFocus-<version>-win-x64.zip` from
+**Microsoft Store (recommended):** [Flip Focus Timer](https://apps.microsoft.com/detail/9NMBL26L3VGQ)
+— one click, signed by Microsoft, no SmartScreen warning, updates itself.
+
+**Portable:** grab `FlipFocus-portable-win-x64.zip` from
 [Releases](https://github.com/otamendez11/flip-focus/releases/latest), unzip it
 anywhere and run `FlipFocus.exe`. It is self-contained: **no .NET install needed**.
 
 Windows 10 or 11, 64 bits.
 
-> The binary is not code-signed yet, so SmartScreen may warn you the first time.
-> Click *More info* then *Run anyway*, or build it yourself from source.
+> The portable build is not code-signed, so SmartScreen may warn you the first time.
+> Click *More info* then *Run anyway*, or use the Store version.
 
 ## Shortcuts
 
