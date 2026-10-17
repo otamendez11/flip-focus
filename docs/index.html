@@ -3,112 +3,175 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flip Focus — flip-clock focus timer for Windows</title>
-<meta name="description" content="A flip-clock focus timer that lives in the corner of your screen. Always on top, around 60 MB of RAM, no telemetry. Free and open source for Windows 10 and 11.">
+<title>Flip Focus — a flip-clock focus timer for Windows</title>
+<meta name="description" content="A flip-clock focus timer that lives in the corner of your screen. Always on top, around 60 MB of RAM, nothing to sign up for. Free for Windows 10 and 11.">
 <style>
-  :root {
-    --bg: #0a0a0b;
-    --card: #1c1c1e;
-    --line: #26262a;
-    --text: #f2f2f0;
-    --muted: #9a9a98;
-  }
+  :root { --bg:#0a0a0b; --card:#17171a; --line:#26262a; --text:#f2f2f0; --muted:#9a9a98; }
   * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
-    line-height: 1.6;
-  }
-  .wrap { max-width: 880px; margin: 0 auto; padding: 72px 24px 96px; }
-  h1 { font-size: 46px; margin: 0 0 8px; letter-spacing: -1px; }
-  h2 { font-size: 20px; margin: 56px 0 12px; }
-  p { color: var(--muted); margin: 0 0 14px; }
-  .lead { font-size: 18px; color: var(--text); max-width: 620px; }
-  .buttons { margin: 32px 0 8px; display: flex; gap: 12px; flex-wrap: wrap; }
-  a.btn {
-    display: inline-block; padding: 14px 24px; border-radius: 12px;
-    background: var(--text); color: #101012; text-decoration: none;
-    font-weight: 600; border: 1px solid var(--text);
-  }
-  a.ghost { background: transparent; color: var(--text); border-color: var(--line); }
-  a.btn:hover { opacity: .88; }
-  img { width: 100%; border-radius: 16px; border: 1px solid var(--line); margin-top: 12px; }
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  ul { color: var(--muted); padding-left: 20px; }
-  li { margin-bottom: 8px; }
-  code, pre {
-    font-family: Consolas, "Cascadia Mono", monospace;
-    background: #131316; border: 1px solid var(--line);
-    border-radius: 10px; color: var(--text);
-  }
-  code { padding: 2px 7px; font-size: 13.5px; }
-  pre { padding: 16px; overflow-x: auto; font-size: 13.5px; }
-  footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
-  footer a { color: var(--text); }
-  @media (max-width: 700px) { .row { grid-template-columns: 1fr; } h1 { font-size: 34px; } }
+  body { margin:0; background:var(--bg); color:var(--text);
+         font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif; line-height:1.6; }
+  .wrap { max-width:840px; margin:0 auto; padding:52px 22px 80px; }
+  .lang { text-align:right; margin-bottom:10px; }
+  .lang button { background:transparent; color:var(--muted); border:1px solid var(--line);
+                 border-radius:9px; padding:6px 13px; font-size:13px; cursor:pointer; font-family:inherit; margin-left:4px; }
+  .lang button.on { background:var(--text); color:#101012; border-color:var(--text); font-weight:600; }
+  h1 { font-size:44px; margin:0 0 6px; letter-spacing:-1px; }
+  h2 { font-size:19px; margin:46px 0 10px; }
+  p { color:var(--muted); margin:0 0 14px; }
+  .lead { font-size:18px; color:var(--text); max-width:600px; }
+  .download { margin:26px 0 4px; }
+  a.btn { display:inline-block; padding:19px 36px; border-radius:14px; background:var(--text);
+          color:#101012; text-decoration:none; font-weight:700; font-size:17.5px; }
+  a.btn:hover { opacity:.9; }
+  .small { font-size:14px; color:var(--muted); margin-top:10px; }
+  .alt { font-size:14px; margin-top:14px; }
+  .alt a { color:var(--text); }
+  ol.steps { color:var(--muted); padding-left:22px; }
+  ol.steps li { margin-bottom:6px; }
+  img { width:100%; border-radius:16px; border:1px solid var(--line); margin-top:10px; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  ul { color:var(--muted); padding-left:20px; }
+  li { margin-bottom:7px; }
+  code { font-family:Consolas,"Cascadia Mono",monospace; background:#131316; border:1px solid var(--line);
+         border-radius:8px; padding:2px 6px; font-size:13.5px; color:var(--text); }
+  pre { font-family:Consolas,"Cascadia Mono",monospace; background:#131316; border:1px solid var(--line);
+        border-radius:10px; padding:16px; overflow-x:auto; font-size:13.5px; color:var(--text); }
+  footer { margin-top:56px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:13.5px; }
+  footer a { color:var(--text); }
+  .es { display:none; }
+  body.es-on .en { display:none; }
+  body.es-on .es { display:block; }
+  @media (max-width:700px) { .row { grid-template-columns:1fr; } h1 { font-size:33px; } a.btn { width:100%; text-align:center; } }
 </style>
 </head>
 <body>
+
 <div class="wrap">
 
-  <h1>Flip Focus</h1>
-  <p class="lead">A flip-clock focus timer that lives in the corner of your screen.
-  Small window, always on top, around 60 MB of RAM. No account, no telemetry, no ads.</p>
-
-  <div class="buttons">
-    <a class="btn" href="https://github.com/otamendez11/flip-focus/releases/latest/download/FlipFocus-1.0.0-win-x64.zip">Download for Windows</a>
-    <a class="btn ghost" href="https://github.com/otamendez11/flip-focus">Source code</a>
-  </div>
-  <p style="font-size:14px">Windows 10 or 11, 64 bits. Unzip and run <code>FlipFocus.exe</code>. No .NET install needed.</p>
-
-  <img src="01-normal.png" alt="Flip Focus in normal mode: two dark cards with large white digits showing 24:53">
-
-  <h2>Leave it in a corner and forget about it</h2>
-  <p>Mini mode anchors the clock to any corner of your desktop, always on top,
-  and it never steals focus while you type. Click it to start or pause, drag it
-  to move it, right click for everything else.</p>
-
-  <div class="row">
-    <img src="02-mini.png" alt="Mini mode anchored to the bottom right corner">
-    <img src="03-fullscreen.png" alt="Fullscreen mode with a huge clock on a black background">
+  <div class="lang">
+    <button id="btn-en" class="on" onclick="setLang('en')">English</button>
+    <button id="btn-es" onclick="setLang('es')">Español</button>
   </div>
 
-  <h2>What you get</h2>
-  <ul>
-    <li>Real split-flap digits that flip when they change.</li>
-    <li>A singing bowl, synthesised inside the app, at the end and the start of every session.</li>
-    <li>Three blunt quotes per session, with their author, that fade away on their own. Move the mouse over one and it goes.</li>
-    <li>Three notification states: never, only when the window is hidden in the tray, or always.</li>
-    <li>Global hotkeys that work from any program, and settings applied live.</li>
-    <li>Everything stored in a single JSON file. The app never connects to the internet.</li>
-  </ul>
+  <!-- ================= ENGLISH ================= -->
+  <div class="en">
+    <h1>Flip Focus</h1>
+    <p class="lead">A flip-clock timer that sits in the corner of your screen while you work.
+    Always on top, around 60 MB of memory, nothing to sign up for.</p>
 
-  <h2>Resource use</h2>
-  <p>Measured on an 8-core Windows 11 machine, mini mode:</p>
-  <pre>idle ................ 47 MB private   0.1 % CPU
-running, flip on .... 61 MB private   1.8 % CPU
-running, flip off ... 58 MB private   0.8 % CPU</pre>
+    <div class="download">
+      <a class="btn" href="https://github.com/otamendez11/flip-focus/releases/latest/download/FlipFocus-portable-win-x64.zip">Download for Windows</a>
+      <p class="small">Windows 10 or 11, 64 bits · Free · About 63 MB · Nothing to install</p>
+    </div>
 
-  <h2>Shortcuts</h2>
-  <pre>Space     start or pause          Ctrl + Alt + P    start or pause anywhere
+    <h2>Three easy steps</h2>
+    <ol class="steps">
+      <li>Click the download button above.</li>
+      <li>Right click the downloaded file and choose <em>Extract all</em>, then <em>Extract</em>.</li>
+      <li>Open the folder and double click <code>FlipFocus.exe</code>. That is it: it starts and stays in your corner.</li>
+    </ol>
+    <p class="small">The first time, Windows may show a blue warning because the app is not signed yet.
+    Click <em>More info</em> and then <em>Run anyway</em>. It will not ask again.</p>
+
+    <img src="01-normal.png" alt="Flip Focus showing 24:53 on two dark cards with big white digits">
+
+    <h2>What it does</h2>
+    <ul>
+      <li>Three focus sessions with short breaks, then a long break. It keeps the cycle count for you.</li>
+      <li>Leave it small in a corner. It stays on top and never steals your keyboard focus.</li>
+      <li>A soft singing bowl at the end and the start of every session.</li>
+      <li>Three blunt quotes per session, credited, that disappear on their own.</li>
+      <li>Notifications only when you want them: for example, close the window, go do something else, and it tells you when the session ends.</li>
+    </ul>
+
+    <div class="row">
+      <img src="02-mini.png" alt="Mini mode in the corner of the desktop">
+      <img src="03-fullscreen.png" alt="Fullscreen mode with a very large clock">
+    </div>
+
+    <h2>Keyboard</h2>
+    <pre>Space     start or pause          Ctrl + Alt + P    start or pause anywhere
 Esc       leave fullscreen        Ctrl + Alt + M    mini / normal
 F         fullscreen              Ctrl + Alt + F    fullscreen
 M / N     mini / normal           Ctrl + Alt + C    restart cycle
 A         settings                Ctrl + Alt + N    notifications on/off
 C         restart cycle           Ctrl + Alt + H    hide or show window</pre>
 
-  <h2>Verify your download</h2>
-  <p>Each release ships a <code>SHA256SUMS.txt</code>. For 1.0.0 the zip hash is:</p>
-  <pre>DE34CC7DC4D45A223889F60564E3FF6151417FC8A1DBF4F05A43C000F76F369B</pre>
-  <p>Check it with <code>Get-FileHash .\FlipFocus-1.0.0-win-x64.zip</code> in PowerShell.</p>
+    <h2>Memory, processor and privacy</h2>
+    <p>Around 47 MB while idle and 61 MB while running, using under 2 per cent of one processor core.
+    The app never connects to the internet and collects nothing. Your settings live in one file you can delete.</p>
+  </div>
+
+  <!-- ================= ESPAÑOL ================= -->
+  <div class="es">
+    <h1>Flip Focus</h1>
+    <p class="lead">Un reloj de pestañas que se queda en la esquina de tu pantalla mientras trabajas.
+    Siempre encima, unos 60 MB de memoria y sin registrarte en nada.</p>
+
+    <div class="download">
+      <a class="btn" href="https://github.com/otamendez11/flip-focus/releases/latest/download/FlipFocus-portable-win-x64.zip">Descargar para Windows</a>
+      <p class="small">Windows 10 u 11, 64 bits · Gratis · Unos 63 MB · No hay que instalar nada</p>
+    </div>
+
+    <h2>Tres pasos faciles</h2>
+    <ol class="steps">
+      <li>Pulsa el botón de descarga de arriba.</li>
+      <li>Haz clic derecho en el archivo descargado y elige <em>Extraer todo</em>, luego <em>Extraer</em>.</li>
+      <li>Abre la carpeta y haz doble clic en <code>FlipFocus.exe</code>. Ya está: arranca y se queda en tu esquina.</li>
+    </ol>
+    <p class="small">La primera vez Windows puede avisar en azul porque la app todavía no está firmada.
+    Pulsa <em>Más información</em> y luego <em>Ejecutar de todas formas</em>. No volverá a preguntar.</p>
+
+    <img src="01-normal.png" alt="Flip Focus mostrando 24:53 en dos tarjetas oscuras con números blancos grandes">
+
+    <h2>Qué hace</h2>
+    <ul>
+      <li>Tres sesiones de foco con descansos cortos y luego un descanso largo. Lleva la cuenta del ciclo por ti.</li>
+      <li>Se queda pequeño en una esquina, siempre encima, y nunca te roba el teclado mientras escribes.</li>
+      <li>Un cuenco tibetano suave al terminar y al empezar cada sesión.</li>
+      <li>Tres frases contundentes por sesión, con su autor, que desaparecen solas.</li>
+      <li>Avisos solo cuando tú quieras: por ejemplo, cierras la ventana, te vas a hacer otra cosa y te avisa al terminar.</li>
+    </ul>
+
+    <div class="row">
+      <img src="02-mini.png" alt="Modo mini en la esquina del escritorio">
+      <img src="03-fullscreen.png" alt="Pantalla completa con el reloj muy grande">
+    </div>
+
+    <h2>Teclado</h2>
+    <pre>Espacio   empezar o pausar       Ctrl + Alt + P    empezar o pausar desde donde sea
+Esc       salir de pantalla       Ctrl + Alt + M    mini / normal
+F         pantalla completa       Ctrl + Alt + F    pantalla completa
+M / N     mini / normal           Ctrl + Alt + C    reiniciar el ciclo
+A         ajustes                 Ctrl + Alt + N    avisos encendidos o apagados
+C         reiniciar el ciclo      Ctrl + Alt + H    ocultar o mostrar la ventana</pre>
+
+    <h2>Memoria, procesador y privacidad</h2>
+    <p>Unos 47 MB en reposo y 61 MB funcionando, con menos del 2 por ciento de un núcleo del procesador.
+    La app no se conecta a internet y no recoge ningún dato. Tus ajustes viven en un solo archivo que puedes borrar cuando quieras.</p>
+  </div>
 
   <footer>
-    MIT licensed · <a href="https://github.com/otamendez11/flip-focus">github.com/otamendez11/flip-focus</a> ·
-    Not code-signed yet, so SmartScreen may warn you the first time: click <em>More info</em>, then <em>Run anyway</em>.
+    <span class="en">MIT licensed · <a href="https://github.com/otamendez11/flip-focus">Source code and portable zip</a></span>
+    <span class="es">Licencia MIT · <a href="https://github.com/otamendez11/flip-focus">Código fuente y versión portable</a></span>
   </footer>
 
 </div>
+
+<script>
+  function setLang(lang) {
+    document.body.classList.toggle('es-on', lang === 'es');
+    document.getElementById('btn-es').classList.toggle('on', lang === 'es');
+    document.getElementById('btn-en').classList.toggle('on', lang !== 'es');
+    document.documentElement.lang = lang;
+    try { localStorage.setItem('flipfocus-lang', lang); } catch (e) {}
+  }
+  try {
+    var saved = localStorage.getItem('flipfocus-lang');
+    var browser = (navigator.language || 'en').toLowerCase().startsWith('es') ? 'es' : 'en';
+    setLang(saved || browser);
+  } catch (e) {}
+</script>
+
 </body>
 </html>

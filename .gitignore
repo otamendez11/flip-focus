@@ -22,3 +22,6 @@ diag-*.log
 
 # Release package
 *.zip
+
+# El token de gh no tiene permiso workflow: el archivo se guarda en docs/
+.github/workflows/
