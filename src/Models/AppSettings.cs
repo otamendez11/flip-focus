@@ -45,6 +45,13 @@ public enum NotificationMode
     Always
 }
 
+/// <summary>Idioma de la interfaz.</summary>
+public enum AppLanguage
+{
+    English,
+    Spanish
+}
+
 /// <summary>
 /// Estado persistente de la app. Implementa INotifyPropertyChanged para que los
 /// bindings del panel de ajustes funcionen en dos direcciones sin framework MVVM.
@@ -60,6 +67,7 @@ public sealed class AppSettings : INotifyPropertyChanged
     private bool _soundEnabled = true;
     private int _volumePercent = 35;
     private NotificationMode _notificationMode = NotificationMode.Never;
+    private AppLanguage _appLanguage = AppLanguage.English;
     private bool _alwaysOnTop = true;
     private bool _showSeconds = true;
     private bool _showControlsOnHover = true;
@@ -100,6 +108,9 @@ public sealed class AppSettings : INotifyPropertyChanged
         => NotificationMode = NotificationMode == NotificationMode.Never
             ? NotificationMode.OnlyWhenHidden
             : NotificationMode.Never;
+
+    /// <summary>Idioma de la interfaz. Ingles de fabrica.</summary>
+    public AppLanguage AppLanguage { get => _appLanguage; set => Set(ref _appLanguage, value); }
     public bool AlwaysOnTop { get => _alwaysOnTop; set => Set(ref _alwaysOnTop, value); }
     public bool ShowSeconds { get => _showSeconds; set => Set(ref _showSeconds, value); }
     public bool ShowControlsOnHover { get => _showControlsOnHover; set => Set(ref _showControlsOnHover, value); }

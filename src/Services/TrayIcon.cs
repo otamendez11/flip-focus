@@ -7,17 +7,25 @@ namespace PomodoroFlip.Services;
 /// <summary>
 /// Icono en la bandeja del sistema con menu propio en tema oscuro.
 /// Usa el NotifyIcon de WinForms: es el mecanismo nativo y no cuesta RAM apreciable.
+/// Los textos se piden a Localization para que el menu siga el idioma elegido.
 /// </summary>
 public sealed class TrayIcon : IDisposable
 {
     private readonly WF.NotifyIcon _icon;
+    private readonly WF.ContextMenuStrip _menu;
     private readonly WF.ToolStripMenuItem _toggleItem;
     private readonly WF.ToolStripMenuItem _showItem;
+    private readonly WF.ToolStripMenuItem _resetItem;
     private readonly WF.ToolStripMenuItem _notifyItem;
+    private readonly WF.ToolStripMenuItem _miniItem;
+    private readonly WF.ToolStripMenuItem _normalItem;
+    private readonly WF.ToolStripMenuItem _fullItem;
+    private readonly WF.ToolStripMenuItem _settingsItem;
+    private readonly WF.ToolStripMenuItem _exitItem;
 
     public TrayIcon()
     {
-        var menu = new WF.ContextMenuStrip
+        _menu = new WF.ContextMenuStrip
         {
             Renderer = new DarkRenderer(),
             ShowImageMargin = false,
@@ -26,37 +34,37 @@ public sealed class TrayIcon : IDisposable
             ForeColor = Color.FromArgb(240, 240, 238)
         };
 
-        _showItem = new WF.ToolStripMenuItem("Mostrar u ocultar", null, (_, _) => ShowHideRequested?.Invoke());
-        _toggleItem = new WF.ToolStripMenuItem("Iniciar", null, (_, _) => PlayPauseRequested?.Invoke());
-        var resetItem = new WF.ToolStripMenuItem("Reiniciar fase", null, (_, _) => ResetRequested?.Invoke());
-        var miniItem = new WF.ToolStripMenuItem("Modo mini (esquina)", null, (_, _) => MiniRequested?.Invoke());
-        var normalItem = new WF.ToolStripMenuItem("Modo normal", null, (_, _) => NormalRequested?.Invoke());
-        var fullItem = new WF.ToolStripMenuItem("Pantalla completa", null, (_, _) => FullscreenRequested?.Invoke());
-        var settingsItem = new WF.ToolStripMenuItem("Ajustes...", null, (_, _) => SettingsRequested?.Invoke());
-        _notifyItem = new WF.ToolStripMenuItem("Avisarme al terminar", null, (_, _) => NotificationsToggleRequested?.Invoke())
+        _showItem = new WF.ToolStripMenuItem(Lang.Get("L.tray.showhide"), null, (_, _) => ShowHideRequested?.Invoke());
+        _toggleItem = new WF.ToolStripMenuItem(Lang.Get("L.menu.play"), null, (_, _) => PlayPauseRequested?.Invoke());
+        _resetItem = new WF.ToolStripMenuItem(Lang.Get("L.tray.reset"), null, (_, _) => ResetRequested?.Invoke());
+        _miniItem = new WF.ToolStripMenuItem(Lang.Get("L.tray.mini"), null, (_, _) => MiniRequested?.Invoke());
+        _normalItem = new WF.ToolStripMenuItem(Lang.Get("L.tray.normal"), null, (_, _) => NormalRequested?.Invoke());
+        _fullItem = new WF.ToolStripMenuItem(Lang.Get("L.tray.fullscreen"), null, (_, _) => FullscreenRequested?.Invoke());
+        _settingsItem = new WF.ToolStripMenuItem(Lang.Get("L.tray.settings"), null, (_, _) => SettingsRequested?.Invoke());
+        _notifyItem = new WF.ToolStripMenuItem(Lang.Get("L.tray.notify"), null, (_, _) => NotificationsToggleRequested?.Invoke())
         {
             CheckOnClick = false
         };
-        var exitItem = new WF.ToolStripMenuItem("Salir", null, (_, _) => ExitRequested?.Invoke());
+        _exitItem = new WF.ToolStripMenuItem(Lang.Get("L.tray.exit"), null, (_, _) => ExitRequested?.Invoke());
 
-        menu.Items.AddRange(new WF.ToolStripItem[]
+        _menu.Items.AddRange(new WF.ToolStripItem[]
         {
             _showItem,
             new WF.ToolStripSeparator(),
             _toggleItem,
-            resetItem,
+            _resetItem,
             new WF.ToolStripSeparator(),
             _notifyItem,
             new WF.ToolStripSeparator(),
-            miniItem,
-            normalItem,
-            fullItem,
+            _miniItem,
+            _normalItem,
+            _fullItem,
             new WF.ToolStripSeparator(),
-            settingsItem,
-            exitItem
+            _settingsItem,
+            _exitItem
         });
 
-        foreach (WF.ToolStripItem item in menu.Items)
+        foreach (WF.ToolStripItem item in _menu.Items)
         {
             item.ForeColor = Color.FromArgb(240, 240, 238);
         }
@@ -66,7 +74,7 @@ public sealed class TrayIcon : IDisposable
             Icon = AppIcon.Get(32),
             Text = "Flip Focus",
             Visible = true,
-            ContextMenuStrip = menu
+            ContextMenuStrip = _menu
         };
 
         _icon.DoubleClick += (_, _) => ShowHideRequested?.Invoke();
@@ -89,20 +97,32 @@ public sealed class TrayIcon : IDisposable
     /// <summary>Marca o desmarca la entrada de avisos del menu de la bandeja.</summary>
     public void SetNotificationsChecked(bool on) => _notifyItem.Checked = on;
 
+    /// <summary>Vuelve a poner los textos del menu en el idioma actual.</summary>
+    public void ApplyLanguage()
+    {
+        _showItem.Text = Lang.Get("L.tray.showhide");
+        _resetItem.Text = Lang.Get("L.tray.reset");
+        _notifyItem.Text = Lang.Get("L.tray.notify");
+        _miniItem.Text = Lang.Get("L.tray.mini");
+        _normalItem.Text = Lang.Get("L.tray.normal");
+        _fullItem.Text = Lang.Get("L.tray.fullscreen");
+        _settingsItem.Text = Lang.Get("L.tray.settings");
+        _exitItem.Text = Lang.Get("L.tray.exit");
+    }
+
     public void Update(bool running, PhaseKind phase, string timeText)
     {
         var phaseName = phase switch
         {
-            PhaseKind.Focus => "Foco",
-            PhaseKind.ShortBreak => "Descanso",
-            _ => "Descanso largo"
+            PhaseKind.Focus => Lang.Get("L.tray.phase.focus"),
+            PhaseKind.ShortBreak => Lang.Get("L.tray.phase.short"),
+            _ => Lang.Get("L.tray.phase.long")
         };
 
-        var text = $"Pomodoro Flip - {timeText} - {phaseName}";
+        var text = $"Flip Focus - {timeText} - {phaseName}";
         if (text.Length > 62) text = text[..62];
         _icon.Text = text;
-        _toggleItem.Text = running ? "Pausar" : "Iniciar";
-        _showItem.Text = "Mostrar u ocultar";
+        _toggleItem.Text = Lang.Get(running ? "L.menu.pause" : "L.menu.play");
     }
 
     public void ShowBalloon(string title, string text)
@@ -124,6 +144,7 @@ public sealed class TrayIcon : IDisposable
     {
         _icon.Visible = false;
         _icon.Dispose();
+        _menu.Dispose();
     }
 
     /// <summary>Paleta oscura para que el menu de la bandeja no desentone con la app.</summary>

@@ -57,6 +57,11 @@ public partial class App : Application
         {
             PomodoroFlip.MainWindow.DiagPath = e.Args[diagIndex + 1];
         }
+        // El idioma se fija antes de construir la ventana, para que los textos
+        // salgan ya en el idioma guardado.
+        var saved = Services.SettingsStore.Load();
+        Services.Lang.Apply(saved.AppLanguage, notify: false);
+
         var window = new MainWindow(startInTray);
         MainWindow = window;
         window.Show();

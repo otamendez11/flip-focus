@@ -5,7 +5,7 @@ using PomodoroFlip.Models;
 
 namespace PomodoroFlip.Services;
 
-/// <summary>Guarda y lee los ajustes en %APPDATA%\PomodoroFlip\settings.json.</summary>
+/// <summary>Guarda y lee los ajustes en %APPDATA%\FlipFocus\settings.json.</summary>
 public static class SettingsStore
 {
     private static readonly JsonSerializerOptions Options = new()
@@ -16,14 +16,27 @@ public static class SettingsStore
 
     public static string FolderPath { get; } = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        "PomodoroFlip");
+        "FlipFocus");
 
     public static string FilePath { get; } = Path.Combine(FolderPath, "settings.json");
+
+    /// <summary>Carpeta de la version anterior, cuando la app se llamaba Pomodoro Flip.</summary>
+    private static string LegacyFilePath { get; } = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "PomodoroFlip",
+        "settings.json");
 
     public static AppSettings Load()
     {
         try
         {
+            if (!File.Exists(FilePath) && File.Exists(LegacyFilePath))
+            {
+                // Al cambiar de nombre se conserva la configuracion del usuario.
+                Directory.CreateDirectory(FolderPath);
+                File.Copy(LegacyFilePath, FilePath, overwrite: false);
+            }
+
             if (File.Exists(FilePath))
             {
                 var json = File.ReadAllText(FilePath);

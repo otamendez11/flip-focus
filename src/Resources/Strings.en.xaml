@@ -1,0 +1,146 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=System.Runtime">
+
+    <!-- ===== Ajustes ===== -->
+    <sys:String x:Key="L.set.title">Settings</sys:String>
+    <sys:String x:Key="L.set.subtitle">Changes apply straight away.</sys:String>
+    <sys:String x:Key="L.set.close">Close settings</sys:String>
+
+    <sys:String x:Key="L.set.sec.language">LANGUAGE</sys:String>
+    <sys:String x:Key="L.set.sec.times">TIMES</sys:String>
+    <sys:String x:Key="L.set.sec.behaviour">BEHAVIOUR</sys:String>
+    <sys:String x:Key="L.set.sec.window">WINDOW</sys:String>
+    <sys:String x:Key="L.set.sec.clock">CLOCK</sys:String>
+    <sys:String x:Key="L.set.sec.system">SYSTEM</sys:String>
+
+    <sys:String x:Key="L.set.focus">Focus session</sys:String>
+    <sys:String x:Key="L.set.focus.hint">Minutes of work in a row.</sys:String>
+    <sys:String x:Key="L.set.short">Short break</sys:String>
+    <sys:String x:Key="L.set.short.hint">Pause between sessions.</sys:String>
+    <sys:String x:Key="L.set.long">Long break</sys:String>
+    <sys:String x:Key="L.set.long.hint">Pause after finishing the cycle.</sys:String>
+    <sys:String x:Key="L.set.cycles">Sessions per cycle</sys:String>
+    <sys:String x:Key="L.set.cycles.hint">Focus sessions before the long break.</sys:String>
+    <sys:String x:Key="L.set.cycle.current">Current cycle</sys:String>
+    <sys:String x:Key="L.set.cycle.reset">Start over</sys:String>
+    <sys:String x:Key="L.set.cycle.reset.tip">Back to session 1 and clears the cycle count (key C)</sys:String>
+
+    <sys:String x:Key="L.set.chain.breaks">Chain breaks</sys:String>
+    <sys:String x:Key="L.set.chain.breaks.hint">The break starts by itself when the focus ends.</sys:String>
+    <sys:String x:Key="L.set.chain.focus">Chain focus</sys:String>
+    <sys:String x:Key="L.set.chain.focus.hint">Goes back to work by itself when the break ends.</sys:String>
+    <sys:String x:Key="L.set.bowl">Singing bowl on session change</sys:String>
+    <sys:String x:Key="L.set.bowl.hint">Plays when a session ends and when the next one starts. Soft and low.</sys:String>
+    <sys:String x:Key="L.set.volume">Volume</sys:String>
+    <sys:String x:Key="L.set.volume.hint">Percent. Low by default.</sys:String>
+    <sys:String x:Key="L.set.quotes">Blunt quotes</sys:String>
+    <sys:String x:Key="L.set.quotes.hint">Three per session, with their author. They show up, stay a few seconds and go. Move the mouse over one and it leaves.</sys:String>
+    <sys:String x:Key="L.set.notifications">Notifications</sys:String>
+    <sys:String x:Key="L.set.notifications.hint">Tray balloon at the end of a phase. Choose when you want to see it.</sys:String>
+    <sys:String x:Key="L.set.notif.never">Never</sys:String>
+    <sys:String x:Key="L.set.notif.hidden">Only if I close the window</sys:String>
+    <sys:String x:Key="L.set.notif.always">Always</sys:String>
+    <sys:String x:Key="L.set.notif.shortcut">Quick shortcut: Ctrl + Alt + N, or the right click menu.</sys:String>
+    <sys:String x:Key="L.set.sound.fullscreen">Play sound in fullscreen</sys:String>
+    <sys:String x:Key="L.set.sound.fullscreen.hint">Useful if you leave the app in view.</sys:String>
+
+    <sys:String x:Key="L.set.mode">Mode</sys:String>
+    <sys:String x:Key="L.set.mode.mini">Mini</sys:String>
+    <sys:String x:Key="L.set.mode.normal">Normal</sys:String>
+    <sys:String x:Key="L.set.mode.fullscreen">Fullscreen</sys:String>
+    <sys:String x:Key="L.set.corner">Anchor corner (mini mode)</sys:String>
+    <sys:String x:Key="L.set.corner.tl">Top left</sys:String>
+    <sys:String x:Key="L.set.corner.tr">Top right</sys:String>
+    <sys:String x:Key="L.set.corner.bl">Bottom left</sys:String>
+    <sys:String x:Key="L.set.corner.br">Bottom right</sys:String>
+    <sys:String x:Key="L.set.mini.size">Size in mini mode</sys:String>
+    <sys:String x:Key="L.set.mini.size.hint">From 30 to 70 percent.</sys:String>
+    <sys:String x:Key="L.set.normal.size">Size in normal mode</sys:String>
+    <sys:String x:Key="L.set.normal.size.hint">From 55 to 130 percent.</sys:String>
+    <sys:String x:Key="L.set.opacity">Opacity</sys:String>
+    <sys:String x:Key="L.set.opacity.hint">Lower it so it gets in the way less.</sys:String>
+    <sys:String x:Key="L.set.ontop">Always on top</sys:String>
+    <sys:String x:Key="L.set.ontop.hint">Keeps the window above the others.</sys:String>
+
+    <sys:String x:Key="L.set.seconds">Show seconds</sys:String>
+    <sys:String x:Key="L.set.seconds.hint">If you turn it off, the clock shows minutes only.</sys:String>
+    <sys:String x:Key="L.set.flip">Flip effect</sys:String>
+    <sys:String x:Key="L.set.flip.hint">Digits flip when they change. It is the only thing that uses processor; switched off, usage is almost zero.</sys:String>
+    <sys:String x:Key="L.set.hover">Show controls on hover</sys:String>
+    <sys:String x:Key="L.set.hover.hint">Buttons hide when you are not using them.</sys:String>
+
+    <sys:String x:Key="L.set.autostart">Start with Windows</sys:String>
+    <sys:String x:Key="L.set.autostart.hint">Opens minimised in the tray.</sys:String>
+    <sys:String x:Key="L.set.autostart.unsupported">Only available with the published executable.</sys:String>
+    <sys:String x:Key="L.set.hotkeys">Global shortcuts</sys:String>
+    <sys:String x:Key="L.set.hotkeys.hint">Work from any program, without focusing the app.</sys:String>
+    <sys:String x:Key="L.set.media">Keyboard Play/Pause key</sys:String>
+    <sys:String x:Key="L.set.media.hint">Handy, but it takes the key away from Spotify and YouTube.</sys:String>
+    <sys:String x:Key="L.set.focused">With the window focused</sys:String>
+    <sys:String x:Key="L.set.focused.hint">Space pause  ·  Esc leaves fullscreen  ·  F fullscreen  ·  M mini  ·  N normal  ·  A settings  ·  R restarts the phase  ·  S skips the phase  ·  C restarts the cycle</sys:String>
+    <sys:String x:Key="L.set.language">Interface language</sys:String>
+    <sys:String x:Key="L.set.language.hint">Pick the language you prefer. It changes right away.</sys:String>
+
+    <sys:String x:Key="L.set.restore">Restore defaults</sys:String>
+    <sys:String x:Key="L.set.done">Done</sys:String>
+    <sys:String x:Key="L.set.cycle.status">Session {0} of {1}</sys:String>
+    <sys:String x:Key="L.set.cycle.done">Cycle complete, long break next (of {0})</sys:String>
+    <sys:String x:Key="L.set.hotkeys.combo">{0} + P / M / F / A / R / C / N / H</sys:String>
+    <sys:String x:Key="L.set.hotkeys.busy">taken by another app: {0}</sys:String>
+    <sys:String x:Key="L.set.footer">Version {0}  ·  settings at {1}</sys:String>
+
+    <!-- ===== Ventana ===== -->
+    <sys:String x:Key="L.tip.pin">Always on top</sys:String>
+    <sys:String x:Key="L.tip.mini">Mini mode in the corner</sys:String>
+    <sys:String x:Key="L.tip.full">Fullscreen</sys:String>
+    <sys:String x:Key="L.tip.settings">Settings</sys:String>
+    <sys:String x:Key="L.tip.hide">Hide to tray</sys:String>
+    <sys:String x:Key="L.hint.title">Esc to leave fullscreen</sys:String>
+    <sys:String x:Key="L.hint.body">Space pause · F leaves · M shrinks · {0}+P from any program</sys:String>
+
+    <sys:String x:Key="L.menu.play">Start</sys:String>
+    <sys:String x:Key="L.menu.pause">Pause</sys:String>
+    <sys:String x:Key="L.menu.reset">Restart phase</sys:String>
+    <sys:String x:Key="L.menu.skip">Skip phase</sys:String>
+    <sys:String x:Key="L.menu.restartcycle">Restart full cycle (C)</sys:String>
+    <sys:String x:Key="L.menu.mini">Mini mode (corner)</sys:String>
+    <sys:String x:Key="L.menu.normal">Normal mode</sys:String>
+    <sys:String x:Key="L.menu.fullscreen">Fullscreen</sys:String>
+    <sys:String x:Key="L.menu.notify">Tell me when it ends</sys:String>
+    <sys:String x:Key="L.menu.settings">Settings...</sys:String>
+    <sys:String x:Key="L.menu.exit">Quit</sys:String>
+
+    <!-- ===== Reloj ===== -->
+    <sys:String x:Key="L.label.ready">READY</sys:String>
+    <sys:String x:Key="L.label.focus">FOCUS {0}/{1}</sys:String>
+    <sys:String x:Key="L.label.paused">PAUSED</sys:String>
+    <sys:String x:Key="L.label.short">BREAK</sys:String>
+    <sys:String x:Key="L.label.long">LONG BREAK</sys:String>
+
+    <!-- ===== Bandeja ===== -->
+    <sys:String x:Key="L.tray.showhide">Show or hide</sys:String>
+    <sys:String x:Key="L.tray.mini">Mini mode (corner)</sys:String>
+    <sys:String x:Key="L.tray.normal">Normal mode</sys:String>
+    <sys:String x:Key="L.tray.fullscreen">Fullscreen</sys:String>
+    <sys:String x:Key="L.tray.reset">Restart phase</sys:String>
+    <sys:String x:Key="L.tray.notify">Tell me when it ends</sys:String>
+    <sys:String x:Key="L.tray.settings">Settings...</sys:String>
+    <sys:String x:Key="L.tray.exit">Quit</sys:String>
+    <sys:String x:Key="L.tray.phase.focus">Focus</sys:String>
+    <sys:String x:Key="L.tray.phase.short">Break</sys:String>
+    <sys:String x:Key="L.tray.phase.long">Long break</sys:String>
+
+    <!-- ===== Avisos ===== -->
+    <sys:String x:Key="L.balloon.done.focus">Session complete</sys:String>
+    <sys:String x:Key="L.balloon.done.break">Break over</sys:String>
+    <sys:String x:Key="L.balloon.next.focus">Back to focus: the clock is running.</sys:String>
+    <sys:String x:Key="L.balloon.next.short">Short break time.</sys:String>
+    <sys:String x:Key="L.balloon.next.long">Long break time.</sys:String>
+    <sys:String x:Key="L.balloon.paused">It is paused.</sys:String>
+    <sys:String x:Key="L.balloon.tray.title">Flip Focus is still running</sys:String>
+    <sys:String x:Key="L.balloon.tray.body">It went to the tray. I will tell you when the session ends.</sys:String>
+    <sys:String x:Key="L.balloon.cycle.title">Cycle restarted</sys:String>
+    <sys:String x:Key="L.balloon.cycle.body">Starting over: session 1 of {0}.</sys:String>
+
+</ResourceDictionary>

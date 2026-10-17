@@ -218,8 +218,8 @@ public partial class MainWindow : Window
         if (!silent && !_warnedAboutTray && _settings.NotificationMode != NotificationMode.Never)
         {
             _warnedAboutTray = true;
-            _tray?.ShowBalloon("Pomodoro Flip sigue activo",
-                "Se quedo en la bandeja. Te aviso cuando termine la sesion.");
+            _tray?.ShowBalloon(Lang.Get("L.balloon.tray.title"),
+                Lang.Get("L.balloon.tray.body"));
         }
     }
 
@@ -387,7 +387,7 @@ public partial class MainWindow : Window
         Clock.SetCycle(Math.Min(_engine.FocusDoneInCycle, cycleTotal), cycleTotal);
         Settings.SetCycleInfo(Math.Min(_engine.FocusDoneInCycle, cycleTotal), cycleTotal);
 
-        PlayPauseItem.Header = _engine.IsRunning ? "Pausar" : "Iniciar";
+        PlayPauseItem.Header = Lang.Get(_engine.IsRunning ? "L.menu.pause" : "L.menu.play");
 
         // El tooltip de la bandeja se actualiza solo cuando cambia el segundo: hacerlo
         // en cada tick son cuatro llamadas por segundo al shell sin necesidad.
@@ -399,15 +399,15 @@ public partial class MainWindow : Window
 
     private string BuildLabel()
     {
-        if (!_engine.IsRunning && !_startedOnce) return "LISTO";
+        if (!_engine.IsRunning && !_startedOnce) return Lang.Get("L.label.ready");
 
         return _engine.Phase switch
         {
             PhaseKind.Focus => _engine.IsRunning
-                ? $"FOCO {Math.Min(_engine.FocusDoneInCycle + 1, _settings.CyclesBeforeLongBreak)}/{_settings.CyclesBeforeLongBreak}"
-                : "EN PAUSA",
-            PhaseKind.ShortBreak => _engine.IsRunning ? "DESCANSO" : "EN PAUSA",
-            _ => _engine.IsRunning ? "DESCANSO LARGO" : "EN PAUSA"
+                ? Lang.Format("L.label.focus", Math.Min(_engine.FocusDoneInCycle + 1, _settings.CyclesBeforeLongBreak), _settings.CyclesBeforeLongBreak)
+                : Lang.Get("L.label.paused"),
+            PhaseKind.ShortBreak => _engine.IsRunning ? Lang.Get("L.label.short") : Lang.Get("L.label.paused"),
+            _ => _engine.IsRunning ? Lang.Get("L.label.long") : Lang.Get("L.label.paused")
         };
     }
 
@@ -486,13 +486,13 @@ public partial class MainWindow : Window
 
         if (notify)
         {
-            var title = e.Finished == PhaseKind.Focus ? "Sesion completada" : "Descanso terminado";
+            var title = Lang.Get(e.Finished == PhaseKind.Focus ? "L.balloon.done.focus" : "L.balloon.done.break");
             var body = e.Next == PhaseKind.Focus
-                ? "Vuelve al foco: el reloj ya cuenta."
+                ? Lang.Get("L.balloon.next.focus")
                 : e.Next == PhaseKind.ShortBreak
-                    ? "Toca descanso corto."
-                    : "Toca descanso largo.";
-            if (!e.AutoStarted) body += " Esta en pausa.";
+                    ? Lang.Get("L.balloon.next.short")
+                    : Lang.Get("L.balloon.next.long");
+            if (!e.AutoStarted) body += " " + Lang.Get("L.balloon.paused");
             _tray?.ShowBalloon(title, body);
         }
 
@@ -724,8 +724,8 @@ public partial class MainWindow : Window
 
         if (ShouldNotify())
         {
-            _tray?.ShowBalloon("Ciclo reiniciado",
-                $"Empiezas de cero: sesion 1 de {_settings.CyclesBeforeLongBreak}.");
+            _tray?.ShowBalloon(Lang.Get("L.balloon.cycle.title"),
+                Lang.Format("L.balloon.cycle.body", _settings.CyclesBeforeLongBreak));
         }
     }
 
@@ -733,8 +733,8 @@ public partial class MainWindow : Window
     private void ShowShortcutHint()
     {
         var mod = _settings.HotKeyModifier == HotKeyModifier.CtrlShift ? "Ctrl+Shift" : "Ctrl+Alt";
-        ShortcutHintTitle.Text = "Esc para salir de pantalla completa";
-        ShortcutHintBody.Text = $"Espacio pausa  ·  F sale  ·  M reduce  ·  {mod}+P desde cualquier programa";
+        ShortcutHintTitle.Text = Lang.Get("L.hint.title");
+        ShortcutHintBody.Text = Lang.Format("L.hint.body", mod);
 
         ShortcutHint.Visibility = Visibility.Visible;
         ShortcutHint.BeginAnimation(OpacityProperty, null);
@@ -1077,9 +1077,25 @@ public partial class MainWindow : Window
             case nameof(AppSettings.NotificationMode):
                 SyncNotifyMenu();
                 break;
+
+            case nameof(AppSettings.AppLanguage):
+                Lang.Apply(_settings.AppLanguage, notify: false);
+                RefreshLanguage();
+                break;
         }
 
         ScheduleSave();
+    }
+
+    /// <summary>Vuelve a poner los textos que se generan desde codigo.</summary>
+    private void RefreshLanguage()
+    {
+        _lastPhaseState = null;
+        _lastShownSeconds = -1;
+        UpdateClock(animate: false);
+        _tray?.ApplyLanguage();
+        Settings.ApplyLanguage();
+        SyncNotifyMenu();
     }
 
     private void OpenSettings()
@@ -1114,6 +1130,7 @@ public partial class MainWindow : Window
         _settings.SoundEnabled = defaults.SoundEnabled;
         _settings.VolumePercent = defaults.VolumePercent;
         _settings.NotificationMode = defaults.NotificationMode;
+        _settings.AppLanguage = defaults.AppLanguage;
         _settings.PlaySoundInFullscreen = defaults.PlaySoundInFullscreen;
         _settings.AlwaysOnTop = defaults.AlwaysOnTop;
         _settings.ShowSeconds = defaults.ShowSeconds;
