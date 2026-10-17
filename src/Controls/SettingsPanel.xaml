@@ -1,0 +1,421 @@
+<UserControl x:Class="PomodoroFlip.Controls.SettingsPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:svc="clr-namespace:PomodoroFlip.Services"
+             xmlns:models="clr-namespace:PomodoroFlip.Models"
+             FontFamily="{StaticResource UiFont}">
+    <UserControl.Resources>
+        <svc:EnumToBoolConverter x:Key="EnumToBool" />
+    </UserControl.Resources>
+
+    <Border Background="#FF0D0D0F" CornerRadius="19">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- ===== Cabecera ===== -->
+            <Grid Grid.Row="0" Margin="20,16,16,10">
+                <StackPanel>
+                    <TextBlock Text="Ajustes" FontSize="17" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}" />
+                    <TextBlock x:Name="SubtitleText" Text="Los cambios se aplican al instante."
+                               FontSize="11" Foreground="{StaticResource TextMuted}" Margin="0,2,0,0" />
+                </StackPanel>
+                <Button Style="{StaticResource IconButton}" Content="&#xE8BB;" HorizontalAlignment="Right"
+                        VerticalAlignment="Top" Click="Close_Click" ToolTip="Cerrar ajustes" />
+            </Grid>
+
+            <!-- ===== Cuerpo ===== -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20,0,16,0">
+                <ScrollViewer.Resources>
+                    <Style TargetType="ScrollBar" BasedOn="{StaticResource DarkScrollBar}" />
+                </ScrollViewer.Resources>
+                <StackPanel>
+
+                    <!-- TIEMPOS -->
+                    <TextBlock Text="TIEMPOS" Style="{StaticResource SectionHeader}" />
+                    <StackPanel x:Name="TimingSection">
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Sesion de foco" Style="{StaticResource SettingLabel}" />
+                                <TextBlock Text="Minutos de trabajo seguido." Style="{StaticResource SettingHint}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button Style="{StaticResource StepButton}" Content="&#x2013;" Click="FocusMinus_Click" />
+                                <TextBlock Text="{Binding FocusMinutes}" Width="52" TextAlignment="Center" Style="{StaticResource SettingLabel}" />
+                                <Button Style="{StaticResource StepButton}" Content="+" Click="FocusPlus_Click" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Descanso corto" Style="{StaticResource SettingLabel}" />
+                                <TextBlock Text="Pausa entre sesiones." Style="{StaticResource SettingHint}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button Style="{StaticResource StepButton}" Content="&#x2013;" Click="ShortMinus_Click" />
+                                <TextBlock Text="{Binding ShortBreakMinutes}" Width="52" TextAlignment="Center" Style="{StaticResource SettingLabel}" />
+                                <Button Style="{StaticResource StepButton}" Content="+" Click="ShortPlus_Click" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Descanso largo" Style="{StaticResource SettingLabel}" />
+                                <TextBlock Text="Pausa al completar el ciclo." Style="{StaticResource SettingHint}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button Style="{StaticResource StepButton}" Content="&#x2013;" Click="LongMinus_Click" />
+                                <TextBlock Text="{Binding LongBreakMinutes}" Width="52" TextAlignment="Center" Style="{StaticResource SettingLabel}" />
+                                <Button Style="{StaticResource StepButton}" Content="+" Click="LongPlus_Click" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Sesiones por ciclo" Style="{StaticResource SettingLabel}" />
+                                <TextBlock Text="Focos antes del descanso largo." Style="{StaticResource SettingHint}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button Style="{StaticResource StepButton}" Content="&#x2013;" Click="CyclesMinus_Click" />
+                                <TextBlock Text="{Binding CyclesBeforeLongBreak}" Width="52" TextAlignment="Center" Style="{StaticResource SettingLabel}" />
+                                <Button Style="{StaticResource StepButton}" Content="+" Click="CyclesPlus_Click" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,10,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Ciclo actual" Style="{StaticResource SettingLabel}" />
+                                <TextBlock x:Name="CycleStatusText" Text="Sesion 1 de 4" Style="{StaticResource SettingHint}" />
+                            </StackPanel>
+                            <Button Grid.Column="1" Style="{StaticResource ActionButton}" Content="Empezar de cero"
+                                    VerticalAlignment="Center" Click="RestartCycle_Click"
+                                    ToolTip="Vuelve a la sesion 1 y borra la cuenta del ciclo (tecla C)" />
+                        </Grid>
+                    </StackPanel>
+
+                    <Rectangle Style="{StaticResource Divider}" />
+
+                    <!-- COMPORTAMIENTO -->
+                    <TextBlock Text="COMPORTAMIENTO" Style="{StaticResource SectionHeader}" />
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Encadenar descansos" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="El descanso arranca solo al terminar el foco." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <ToggleButton Grid.Column="1" Style="{StaticResource ToggleSwitch}" VerticalAlignment="Center"
+                                      IsChecked="{Binding AutoStartBreaks, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Encadenar foco" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Vuelve a trabajar solo al acabar el descanso." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <ToggleButton Grid.Column="1" Style="{StaticResource ToggleSwitch}" VerticalAlignment="Center"
+                                      IsChecked="{Binding AutoStartFocus, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Cuenco al cambiar de sesion" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Suena al terminar y al empezar, bajo y suave." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <ToggleButton Grid.Column="1" Style="{StaticResource ToggleSwitch}" VerticalAlignment="Center"
+                                      IsChecked="{Binding SoundEnabled, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Volumen" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Por ciento. Bajo de fabrica." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Style="{StaticResource StepButton}" Content="&#x2013;" Click="VolumeMinus_Click" />
+                            <TextBlock Text="{Binding VolumePercent}" Width="52" TextAlignment="Center" Style="{StaticResource SettingLabel}" />
+                            <Button Style="{StaticResource StepButton}" Content="+" Click="VolumePlus_Click" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Frases contundentes" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Tres por sesion, con su autor. Salen, aguantan unos segundos y se van. Si pasas el raton por encima, desaparecen." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <ToggleButton Grid.Column="1" Style="{StaticResource ToggleSwitch}" VerticalAlignment="Center"
+                                      IsChecked="{Binding MotivationalQuotes, Mode=TwoWay}" />
+                    </Grid>
+
+                    <StackPanel Margin="0,0,0,14">
+                        <TextBlock Text="Notificaciones" Style="{StaticResource SettingLabel}" />
+                        <TextBlock Text="Globo de la bandeja al terminar una fase. Elige cuando quieres verlo." Style="{StaticResource SettingHint}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,9,0,0">
+                            <RadioButton Style="{StaticResource Segment}" Content="Nunca" GroupName="Notif"
+                                         IsChecked="{Binding NotificationMode, Converter={StaticResource EnumToBool}, ConverterParameter=Never, Mode=TwoWay}" />
+                            <RadioButton Style="{StaticResource Segment}" Content="Solo si cierro la ventana" GroupName="Notif"
+                                         IsChecked="{Binding NotificationMode, Converter={StaticResource EnumToBool}, ConverterParameter=OnlyWhenHidden, Mode=TwoWay}" />
+                            <RadioButton Style="{StaticResource Segment}" Content="Siempre" GroupName="Notif"
+                                         IsChecked="{Binding NotificationMode, Converter={StaticResource EnumToBool}, ConverterParameter=Always, Mode=TwoWay}" />
+                        </StackPanel>
+                        <TextBlock Text="Atajo rapido: Ctrl + Alt + N, o el menu del boton derecho." Style="{StaticResource SettingHint}" Margin="0,9,0,0" />
+                    </StackPanel>
+
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Sonar en pantalla completa" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Util si dejas la app a la vista." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <ToggleButton Grid.Column="1" Style="{StaticResource ToggleSwitch}" VerticalAlignment="Center"
+                                      IsChecked="{Binding PlaySoundInFullscreen, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Rectangle Style="{StaticResource Divider}" />
+
+                    <!-- VENTANA -->
+                    <TextBlock Text="VENTANA" Style="{StaticResource SectionHeader}" />
+
+                    <StackPanel Margin="0,0,0,14">
+                        <TextBlock Text="Modo" Style="{StaticResource SettingLabel}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <RadioButton Style="{StaticResource Segment}" Content="Mini" GroupName="Mode"
+                                         IsChecked="{Binding Mode, Converter={StaticResource EnumToBool}, ConverterParameter=Mini, Mode=TwoWay}" />
+                            <RadioButton Style="{StaticResource Segment}" Content="Normal" GroupName="Mode"
+                                         IsChecked="{Binding Mode, Converter={StaticResource EnumToBool}, ConverterParameter=Normal, Mode=TwoWay}" />
+                            <RadioButton Style="{StaticResource Segment}" Content="Pantalla completa" GroupName="Mode"
+                                         IsChecked="{Binding Mode, Converter={StaticResource EnumToBool}, ConverterParameter=Fullscreen, Mode=TwoWay}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,14">
+                        <TextBlock Text="Esquina de anclaje (modo mini)" Style="{StaticResource SettingLabel}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <RadioButton Style="{StaticResource Segment}" Content="Arriba izq." GroupName="Corner"
+                                         IsChecked="{Binding AnchorCorner, Converter={StaticResource EnumToBool}, ConverterParameter=TopLeft, Mode=TwoWay}" />
+                            <RadioButton Style="{StaticResource Segment}" Content="Arriba der." GroupName="Corner"
+                                         IsChecked="{Binding AnchorCorner, Converter={StaticResource EnumToBool}, ConverterParameter=TopRight, Mode=TwoWay}" />
+                            <RadioButton Style="{StaticResource Segment}" Content="Abajo izq." GroupName="Corner"
+                                         IsChecked="{Binding AnchorCorner, Converter={StaticResource EnumToBool}, ConverterParameter=BottomLeft, Mode=TwoWay}" />
+                            <RadioButton Style="{StaticResource Segment}" Content="Abajo der." GroupName="Corner"
+                                         IsChecked="{Binding AnchorCorner, Converter={StaticResource EnumToBool}, ConverterParameter=BottomRight, Mode=TwoWay}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Tamano en modo mini" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Del 30 al 70 por ciento." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Style="{StaticResource StepButton}" Content="&#x2013;" Click="MiniMinus_Click" />
+                            <TextBlock Text="{Binding MiniScalePercent}" Width="52" TextAlignment="Center" Style="{StaticResource SettingLabel}" />
+                            <Button Style="{StaticResource StepButton}" Content="+" Click="MiniPlus_Click" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Tamano en modo normal" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Del 55 al 130 por ciento." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Style="{StaticResource StepButton}" Content="&#x2013;" Click="NormalMinus_Click" />
+                            <TextBlock Text="{Binding NormalScalePercent}" Width="52" TextAlignment="Center" Style="{StaticResource SettingLabel}" />
+                            <Button Style="{StaticResource StepButton}" Content="+" Click="NormalPlus_Click" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Opacidad" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Bajala para que estorbe menos." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Style="{StaticResource StepButton}" Content="&#x2013;" Click="OpacityMinus_Click" />
+                            <TextBlock Text="{Binding OpacityPercent}" Width="52" TextAlignment="Center" Style="{StaticResource SettingLabel}" />
+                            <Button Style="{StaticResource StepButton}" Content="+" Click="OpacityPlus_Click" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Siempre encima de todo" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Mantiene la ventana por encima de las demas." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <ToggleButton Grid.Column="1" Style="{StaticResource ToggleSwitch}" VerticalAlignment="Center"
+                                      IsChecked="{Binding AlwaysOnTop, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Rectangle Style="{StaticResource Divider}" />
+
+                    <!-- RELOJ -->
+                    <TextBlock Text="RELOJ" Style="{StaticResource SectionHeader}" />
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Mostrar segundos" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Si lo apagas, el reloj muestra solo los minutos." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <ToggleButton Grid.Column="1" Style="{StaticResource ToggleSwitch}" VerticalAlignment="Center"
+                                      IsChecked="{Binding ShowSeconds, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Efecto de volteo" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Los numeros giran al cambiar. Es lo unico que gasta CPU; apagado el consumo es casi cero." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <ToggleButton Grid.Column="1" Style="{StaticResource ToggleSwitch}" VerticalAlignment="Center"
+                                      IsChecked="{Binding FlipAnimation, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Mostrar controles al pasar el mouse" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Los botones se ocultan cuando no los usas." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <ToggleButton Grid.Column="1" Style="{StaticResource ToggleSwitch}" VerticalAlignment="Center"
+                                      IsChecked="{Binding ShowControlsOnHover, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Rectangle Style="{StaticResource Divider}" />
+
+                    <!-- SISTEMA -->
+                    <TextBlock Text="SISTEMA" Style="{StaticResource SectionHeader}" />
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Arrancar con Windows" Style="{StaticResource SettingLabel}" />
+                            <TextBlock x:Name="AutoStartHint" Text="Se abre minimizado en la bandeja." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <ToggleButton x:Name="AutoStartToggle" Grid.Column="1" Style="{StaticResource ToggleSwitch}"
+                                      VerticalAlignment="Center" IsChecked="{Binding StartWithWindows, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Atajos globales" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Funcionan desde cualquier programa, sin enfocar la app." Style="{StaticResource SettingHint}" />
+                            <StackPanel Orientation="Horizontal" Margin="0,9,0,0">
+                                <RadioButton Style="{StaticResource Segment}" Content="Ctrl + Alt" GroupName="HotKeyMod"
+                                             IsChecked="{Binding HotKeyModifier, Converter={StaticResource EnumToBool}, ConverterParameter=CtrlAlt, Mode=TwoWay}" />
+                                <RadioButton Style="{StaticResource Segment}" Content="Ctrl + Shift" GroupName="HotKeyMod"
+                                             IsChecked="{Binding HotKeyModifier, Converter={StaticResource EnumToBool}, ConverterParameter=CtrlShift, Mode=TwoWay}" />
+                            </StackPanel>
+                            <TextBlock x:Name="HotKeyHint" Text="Ctrl + Alt + P / M / F / A / R / C / N / H" Style="{StaticResource SettingHint}" Margin="0,9,0,0" />
+                        </StackPanel>
+                        <ToggleButton Grid.Column="1" Style="{StaticResource ToggleSwitch}" VerticalAlignment="Top"
+                                      Margin="0,2,0,0" IsChecked="{Binding HotKeysEnabled, Mode=TwoWay}" />
+                    </Grid>
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Tecla Play/Pausa del teclado" Style="{StaticResource SettingLabel}" />
+                            <TextBlock Text="Comoda, pero se la quita a Spotify y YouTube." Style="{StaticResource SettingHint}" />
+                        </StackPanel>
+                        <ToggleButton Grid.Column="1" Style="{StaticResource ToggleSwitch}" VerticalAlignment="Center"
+                                      IsChecked="{Binding MediaKeyPlayPause, Mode=TwoWay}" />
+                    </Grid>
+
+                    <StackPanel Margin="0,0,0,14">
+                        <TextBlock Text="Con la ventana enfocada" Style="{StaticResource SettingLabel}" />
+                        <TextBlock Text="Espacio pausa  ·  Esc sale de pantalla completa  ·  F pantalla completa  ·  M mini  ·  N normal  ·  A ajustes  ·  R reinicia la fase  ·  S salta de fase  ·  C reinicia el ciclo"
+                                   Style="{StaticResource SettingHint}" />
+                    </StackPanel>
+
+                    <TextBlock x:Name="FooterText" Style="{StaticResource SettingHint}" Margin="0,6,0,16" />
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- ===== Pie ===== -->
+            <Grid Grid.Row="2" Margin="20,10,16,16">
+                <Button Style="{StaticResource ActionButton}" Content="Restaurar valores por defecto"
+                        HorizontalAlignment="Left" Click="Reset_Click" />
+                <Button Style="{StaticResource ActionButton}" Content="Listo" HorizontalAlignment="Right" Click="Close_Click" />
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>

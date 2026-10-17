@@ -1,0 +1,23 @@
+PackageIdentifier: otamendez11.FlipFocus
+PackageVersion: 1.0.0
+PackageLocale: en-US
+Publisher: Eduardo Otamendez
+PublisherUrl: https://github.com/otamendez11
+PackageName: Flip Focus
+PackageUrl: https://github.com/otamendez11/flip-focus
+License: MIT
+LicenseUrl: https://github.com/otamendez11/flip-focus/blob/main/LICENSE
+Copyright: Copyright (c) 2026 Eduardo Otamendez
+ShortDescription: Flip-clock focus timer that lives in the corner of your screen.
+Description: A pomodoro-style focus timer built around a split-flap clock. Small always-on-top window that never steals focus, fullscreen mode, synthesised singing bowl chime, blunt quotes with credits, tray icon and global hotkeys. Around 60 MB of RAM and no telemetry.
+Moniker: flipfocus
+Tags:
+  - pomodoro
+  - focus
+  - timer
+  - productivity
+  - flip-clock
+  - clock
+ReleaseNotesUrl: https://github.com/otamendez11/flip-focus/releases/latest
+ManifestType: defaultLocale
+ManifestVersion: 1.6.0

@@ -1,0 +1,67 @@
+﻿# Compilacion y release automaticos en GitHub Actions.
+#
+# Este archivo NO se pudo subir al repositorio porque el token de gh que se uso
+# no tiene el permiso "workflow" de GitHub. Para activarlo:
+#
+#   1. Autoriza el permiso (una sola vez):
+#        gh auth refresh -s workflow
+#   2. Crea la carpeta .github/workflows en el repositorio y pon este archivo
+#      ahi como release.yml (desde la web de GitHub: Add file > Create new file,
+#      escribiendo .github/workflows/release.yml y pegando el contenido).
+#   3. A partir de ahi, subir una etiqueta (git tag v1.0.1 && git push --tags)
+#      compila la version autocontenida y publica el release solo.
+#
+# Tambien se puede dejar como esta y publicar los releases a mano con:
+#        gh release create vX.Y.Z <zip> SHA256SUMS.txt
+name: release
+
+# Al subir una etiqueta tipo v1.0.0, compila la version autocontenida y crea el
+# release con el zip listo para descargar.
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Compilar autocontenido
+        run: dotnet publish src/FlipFocus.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -o dist/FlipFocus
+
+      - name: Comprimir
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          if (-not $version) { $version = '0.0.0' }
+          Compress-Archive -Path dist/FlipFocus/* -DestinationPath "dist/FlipFocus-$version-win-x64.zip"
+
+      - name: Firmar el hash
+        shell: pwsh
+        run: |
+          Get-ChildItem dist/*.zip | ForEach-Object {
+            $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash
+            "$hash  $($_.Name)" | Out-File -Append dist/SHA256SUMS.txt
+          }
+          Get-Content dist/SHA256SUMS.txt
+
+      - name: Publicar release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.zip
+            dist/SHA256SUMS.txt
+          generate_release_notes: true
+

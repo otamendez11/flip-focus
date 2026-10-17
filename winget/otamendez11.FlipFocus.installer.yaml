@@ -1,0 +1,13 @@
+PackageIdentifier: otamendez11.FlipFocus
+PackageVersion: 1.0.0
+InstallerType: zip
+NestedInstallerType: portable
+NestedInstallerFiles:
+  - RelativeFilePath: FlipFocus\FlipFocus.exe
+    PortableCommandAlias: flipfocus
+Installers:
+  - Architecture: x64
+    InstallerUrl: https://github.com/otamendez11/flip-focus/releases/download/v1.0.0/FlipFocus-1.0.0-win-x64.zip
+    InstallerSha256: A399038CC878F900654177A28257CB75C66D65CFEB8BAEA2F4B6419227F62CCE
+ManifestType: installer
+ManifestVersion: 1.6.0

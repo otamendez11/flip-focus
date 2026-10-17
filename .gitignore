@@ -1,0 +1,24 @@
+# Build output
+bin/
+obj/
+dist/
+dist-app/
+dist-pack/
+publish-final/
+publish/
+capturas/
+diagnostico-sonido/
+debug.log
+diag-*.log
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+
+# Temporary
+*.tmp
+*.bak
+
+# Release package
+*.zip
