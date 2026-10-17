@@ -5,15 +5,24 @@ A flip-clock focus timer for Windows. Small window in the corner of your screen,
 always on top, around 60 MB of memory. No account, no telemetry, no ads.
 
 --------------------------------------------------------------------------
-HOW TO RUN IT
+EASIEST WAY: MICROSOFT STORE
+--------------------------------------------------------------------------
+https://apps.microsoft.com/detail/9NMBL26L3VGQ
+
+One click, signed by Microsoft, no warning at all. It installs itself,
+updates itself and shows up in the Start menu.
+
+--------------------------------------------------------------------------
+IF YOU HAVE THIS ZIP: PORTABLE VERSION
 --------------------------------------------------------------------------
 1. Unzip this folder anywhere you like.
 2. Double click FlipFocus.exe.
 
 That is it. The app is self-contained: you do not need to install .NET.
 
-The first time, Windows may show a blue warning because the app is not signed
-yet. Click "More info" and then "Run anyway". It will not ask again.
+The first time, Windows may show a blue warning because this build is not
+signed. Click "More info" and then "Run anyway". It will not ask again.
+If the warning bothers you, use the Store version instead.
 
 To have it always at hand, right click FlipFocus.exe and choose "Pin to Start",
 or make a shortcut wherever you prefer.
